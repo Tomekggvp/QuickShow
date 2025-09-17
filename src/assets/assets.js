@@ -34,23 +34,23 @@ export const dummyTrailers = [
 ]
 
 const dummyCastsData = [
-    { "name": "Milla Jovovich", "profile_path": "https://image.tmdb.org/t/p/original/usWnHCzbADijULREZYSJ0qfM00y.jpg", },
-    { "name": "Dave Bautista", "profile_path": "https://image.tmdb.org/t/p/original/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg", },
-    { "name": "Arly Jover", "profile_path": "https://image.tmdb.org/t/p/original/zmznPrQ9GSZwcOIUT0c3GyETwrP.jpg", },
-    { "name": "Amara Okereke", "profile_path": "https://image.tmdb.org/t/p/original/nTSPtzWu6deZTJtWXHUpACVznY4.jpg", },
-    { "name": "Fraser James", "profile_path": "https://image.tmdb.org/t/p/original/mGAPQG2OKTgdKFkp9YpvCSqcbgY.jpg", },
-    { "name": "Deirdre Mullins", "profile_path": "https://image.tmdb.org/t/p/original/lJm89neuiVlYISEqNpGZA5kTAnP.jpg", },
-    { "name": "Sebastian Stankiewicz", "profile_path": "https://image.tmdb.org/t/p/original/hLN0Ca09KwQOFLZLPIEzgTIbqqg.jpg", },
-    { "name": "Tue Lunding", "profile_path": "https://image.tmdb.org/t/p/original/qY4W0zfGBYzlCyCC0QDJS1Muoa0.jpg", },
-    { "name": "Jacek Dzisiewicz", "profile_path": "https://image.tmdb.org/t/p/original/6Ksb8ANhhoWWGnlM6O1qrySd7e1.jpg", },
-    { "name": "Ian Hanmore", "profile_path": "https://image.tmdb.org/t/p/original/yhI4MK5atavKBD9wiJtaO1say1p.jpg", },
-    { "name": "Eveline Hall", "profile_path": "https://image.tmdb.org/t/p/original/uPq4xUPiJIMW5rXF9AT0GrRqgJY.jpg", },
-    { "name": "Kamila Klamut", "profile_path": "https://image.tmdb.org/t/p/original/usWnHCzbADijULREZYSJ0qfM00y.jpg", },
-    { "name": "Caoilinn Springall", "profile_path": "https://image.tmdb.org/t/p/original/uZNtbPHowlBYo74U1qlTaRlrdiY.jpg", },
-    { "name": "Jan Kowalewski", "profile_path": "https://image.tmdb.org/t/p/original/snk6JiXOOoRjPtHU5VMoy6qbd32.jpg", },
-    { "name": "Pawel Wysocki", "profile_path": "https://image.tmdb.org/t/p/original/zmznPrQ9GSZwcOIUT0c3GyETwrP.jpg", },
-    { "name": "Simon Lööf", "profile_path": "https://image.tmdb.org/t/p/original/cbZrB8crWlLEDjVUoak8Liak6s.jpg", },
-    { "name": "Tomasz Cymerman", "profile_path": "https://image.tmdb.org/t/p/original/nTSPtzWu6deZTJtWXHUpACVznY4.jpg", }
+    { "name": "Milla Jovovich", "profile_path": "https://www.film.ru/sites/default/files/people/1563316-817928.jpg", },
+    { "name": "Dave Bautista", "profile_path": "https://upload.wikimedia.org/wikipedia/commons/4/40/Dave_Bautista_Photo_Op_GalaxyCon_Minneapolis_2019.jpg", },
+    { "name": "Arly Jover", "profile_path": "https://m.media-amazon.com/images/M/MV5BZTdiMmEzZTUtOTY2NC00MDQ1LThiY2UtZGE1OTU1NzkxNjdhXkEyXkFqcGc@._V1_.jpg", },
+    { "name": "Amara Okereke", "profile_path": "https://www.shutterstock.com/editorial/image-editorial/O2T9kd2cN7TfAdz7MTM3NQ==/amara-okereke-440nw-9890263do.jpg", },
+    { "name": "Fraser James", "profile_path": "https://www.unitedagents.co.uk/sites/default/files/styles/custom_crop/public/thumbnails/image/fraser-james-8.jpg?itok=MMfOmoBK", },
+    { "name": "Deirdre Mullins", "profile_path": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsU_9H1uC0v8k-43M5oikPf9IB4ttPO8j7fQ&s", },
+    { "name": "Sebastian Stankiewicz", "profile_path": "https://m.media-amazon.com/images/M/MV5BY2RlZDNhOWYtYTJhZS00Y2RjLWE1YWUtNDFlMzhlOWMyZmVlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", },
+    { "name": "Tue Lunding", "profile_path": "https://www.lindbergmanagement.com/wp-content/uploads/2022/09/Tue-Lunding1053.jpeg", },
+    { "name": "Jacek Dzisiewicz", "profile_path": "https://pics.filmaffinity.com/dave_bautista-007531559942965-nm_200.jpg", },
+    { "name": "Ian Hanmore", "profile_path": "https://resizing.flixster.com/Zz-HBsdZpdtNkiDWEYAcNMRR19o=/fit-in/705x460/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/638175_v9_bb.jpg", },
+    { "name": "Eveline Hall", "profile_path": "https://i.mdel.net/i/db/2016/11/605964/605964-500w.jpg", },
+    { "name": "Kamila Klamut", "profile_path": "https://i0.wp.com/www.critical-stages.org/16/wp-content/uploads/sites/17/2017/10/Photo-1-3.jpg?resize=225%2C300&ssl=1", },
+    { "name": "Caoilinn Springall", "profile_path": "https://m.media-amazon.com/images/M/MV5BYWE0ZjIyODAtMWI5My00OTRjLTgxYTctNjVjZGM4ZDgyZDc4XkEyXkFqcGc@._V1_.jpg", },
+    { "name": "Jan Kowalewski", "profile_path": "https://agencjajump.com/wp-content/uploads/2023/12/Jan-Kowalewski-fot.-Rafal-Chojnacki-1.jpg", },
+    { "name": "Pawel Wysocki", "profile_path": "https://pliki2.ptwp.pl/pliki/03/02/67/030267_r0_940.jpg", },
+    { "name": "Simon Lööf", "profile_path": "https://m.media-amazon.com/images/M/MV5BYjkzNzVkNDQtY2FlMC00ZWU4LTlhNWYtZDYyZGRmYzRjYjA4XkEyXkFqcGc@._V1_.jpg", },
+    { "name": "Tomasz Cymerman", "profile_path": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_ObKzTDUuPhCa4S6hzIlQwJsqHYaoGWLetQ&s", }
 ]
 
 export const dummyShowsData = [
@@ -59,7 +59,7 @@ export const dummyShowsData = [
         "id": 324544,
         "title": "In the Lost Lands",
         "overview": "A queen sends the powerful and feared sorceress Gray Alys to the ghostly wilderness of the Lost Lands in search of a magical power, where she and her guide, the drifter Boyce, must outwit and outfight both man and demon.",
-        "poster_path": "https://image.tmdb.org/t/p/original/dDlfjR7gllmr8HTeN6rfrYhTdwX.jpg",
+        "poster_path": "https://m.media-amazon.com/images/I/71MBEL58OuL._UF894,1000_QL80_.jpg",
         "backdrop_path": "https://m.media-amazon.com/images/I/71MBEL58OuL._UF894,1000_QL80_.jpg",
         "genres": [
             { "id": 28, "name": "Action" },
@@ -79,7 +79,7 @@ export const dummyShowsData = [
         "id": 1232546,
         "title": "Until Dawn",
         "overview": "One year after her sister Melanie mysteriously disappeared, Clover and her friends head into the remote valley where she vanished in search of answers. Exploring an abandoned visitor center, they find themselves stalked by a masked killer and horrifically murdered one by one...only to wake up and find themselves back at the beginning of the same evening.",
-        "poster_path": "https://image.tmdb.org/t/p/original/juA4IWO52Fecx8lhAsxmDgy3M3.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/ru/d/d7/Until_Dawn_cover_art.jpg",
         "backdrop_path": "https://upload.wikimedia.org/wikipedia/ru/d/d7/Until_Dawn_cover_art.jpg",
         "genres": [
             { "id": 27, "name": "Horror" },
@@ -98,7 +98,7 @@ export const dummyShowsData = [
         "id": 552524,
         "title": "Lilo & Stitch",
         "overview": "The wildly funny and touching story of a lonely Hawaiian girl and the fugitive alien who helps to mend her broken family.",
-        "poster_path": "https://image.tmdb.org/t/p/original/mKKqV23MQ0uakJS8OCE2TfV5jNS.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/LiloandStitchmovieposter.jpg/250px-LiloandStitchmovieposter.jpg",
         "backdrop_path": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c6/LiloandStitchmovieposter.jpg/250px-LiloandStitchmovieposter.jpg",
         "genres": [
             { "id": 10751, "name": "Family" },
@@ -118,7 +118,7 @@ export const dummyShowsData = [
         "id": 668489,
         "title": "Havoc",
         "overview": "When a drug heist swerves lethally out of control, a jaded cop fights his way through a corrupt city's criminal underworld to save a politician's son.",
-        "poster_path": "https://image.tmdb.org/t/p/original/ubP2OsF3GlfqYPvXyLw9d78djGX.jpg",
+        "poster_path": "https://resizing.flixster.com/2bkyVmLlw_8s0SzA8C1gaYNdoZY=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzJlNTkwNTIxLTM0YmYtNDgzNi1hZGFlLThjODM2ZTA5OTEzMi5qcGc=",
         "backdrop_path": "https://resizing.flixster.com/2bkyVmLlw_8s0SzA8C1gaYNdoZY=/ems.cHJkLWVtcy1hc3NldHMvbW92aWVzLzJlNTkwNTIxLTM0YmYtNDgzNi1hZGFlLThjODM2ZTA5OTEzMi5qcGc=",
         "genres": [
             { "id": 28, "name": "Action" },
@@ -138,7 +138,7 @@ export const dummyShowsData = [
         "id": 950387,
         "title": "A Minecraft Movie",
         "overview": "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination. To get back home, they'll have to master this world while embarking on a magical quest with an unexpected, expert crafter, Steve.",
-        "poster_path": "https://image.tmdb.org/t/p/original/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/thumb/6/66/A_Minecraft_Movie_poster.jpg/250px-A_Minecraft_Movie_poster.jpg",
         "backdrop_path": "https://upload.wikimedia.org/wikipedia/en/thumb/6/66/A_Minecraft_Movie_poster.jpg/250px-A_Minecraft_Movie_poster.jpg",
         "genres": [
             { "id": 10751, "name": "Family" },
@@ -159,7 +159,7 @@ export const dummyShowsData = [
         "id": 575265,
         "title": "Mission: Impossible - The Final Reckoning",
         "overview": "Ethan Hunt and team continue their search for the terrifying AI known as the Entity — which has infiltrated intelligence networks all over the globe — with the world's governments and a mysterious ghost from Hunt's past on their trail. Joined by new allies and armed with the means to shut the Entity down for good, Hunt is in a race against time to prevent the world as we know it from changing forever.",
-        "poster_path": "https://image.tmdb.org/t/p/original/z53D72EAOxGRqdr7KXXWp9dJiDe.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/1/1f/Mission_Impossible_%E2%80%93_The_Final_Reckoning_Poster.jpg",
         "backdrop_path": "https://upload.wikimedia.org/wikipedia/en/1/1f/Mission_Impossible_%E2%80%93_The_Final_Reckoning_Poster.jpg",
         "genres": [
             { "id": 28, "name": "Action" },
@@ -179,7 +179,7 @@ export const dummyShowsData = [
         "id": 986056,
         "title": "Thunderbolts*",
         "overview": "After finding themselves ensnared in a death trap, seven disillusioned castoffs must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.",
-        "poster_path": "https://image.tmdb.org/t/p/original/m9EtP1Yrzv6v7dMaC9mRaGhd1um.jpg",
+        "poster_path": "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Thunderbolts%2A_poster.jpg/250px-Thunderbolts%2A_poster.jpg",
         "backdrop_path": "https://upload.wikimedia.org/wikipedia/en/thumb/9/90/Thunderbolts%2A_poster.jpg/250px-Thunderbolts%2A_poster.jpg",
         "genres": [
             { "id": 28, "name": "Action" },

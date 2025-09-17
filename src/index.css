@@ -16,3 +16,7 @@ body{
     color: white;
     background-color: black;
 }
+
+.no-scrollbar{
+    scrollbar-width: none;
+}
