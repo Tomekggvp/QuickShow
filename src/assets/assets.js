@@ -42,7 +42,7 @@ const dummyCastsData = [
     { "name": "Deirdre Mullins", "profile_path": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsU_9H1uC0v8k-43M5oikPf9IB4ttPO8j7fQ&s", },
     { "name": "Sebastian Stankiewicz", "profile_path": "https://m.media-amazon.com/images/M/MV5BY2RlZDNhOWYtYTJhZS00Y2RjLWE1YWUtNDFlMzhlOWMyZmVlXkEyXkFqcGc@._V1_FMjpg_UX1000_.jpg", },
     { "name": "Tue Lunding", "profile_path": "https://www.lindbergmanagement.com/wp-content/uploads/2022/09/Tue-Lunding1053.jpeg", },
-    { "name": "Jacek Dzisiewicz", "profile_path": "https://pics.filmaffinity.com/dave_bautista-007531559942965-nm_200.jpg", },
+    { "name": "Jacek Dzisiewicz", "profile_path": "https://dubbingpedia.pl/w/images/thumb/b/b8/Jacek_Dzisiewicz.jpg/300px-Jacek_Dzisiewicz.jpg", },
     { "name": "Ian Hanmore", "profile_path": "https://resizing.flixster.com/Zz-HBsdZpdtNkiDWEYAcNMRR19o=/fit-in/705x460/v2/https://resizing.flixster.com/-XZAfHZM39UwaGJIFWKAE8fS0ak=/v3/t/assets/638175_v9_bb.jpg", },
     { "name": "Eveline Hall", "profile_path": "https://i.mdel.net/i/db/2016/11/605964/605964-500w.jpg", },
     { "name": "Kamila Klamut", "profile_path": "https://i0.wp.com/www.critical-stages.org/16/wp-content/uploads/sites/17/2017/10/Photo-1-3.jpg?resize=225%2C300&ssl=1", },
