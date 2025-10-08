@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
 import Loading from '../components/Loading'
-import { ClockIcon } from 'lucide-react'
+import { ArrowRightIcon, ClockIcon } from 'lucide-react'
 import isoTimeFormat from '../lib/isoTimeFormat'
 import BlurCircle from '../components/BlurCircle'
+import toast from 'react-hot-toast'
 
 const SeatLayout = () => {
 
@@ -31,7 +32,7 @@ const SeatLayout = () => {
 
   const handleSeatClick = (seatId) => {
     if(!selectedTime) {
-      return toast("Pleas select time first")
+      return toast("Please select time first")
     }
 
     if(!selectedSeats.includes(seatId) && selectedSeats.length > 4)  {
@@ -96,15 +97,22 @@ const SeatLayout = () => {
             <div className='grid grid-cols-2 md:grid-cols-1 gap-8 md:gap-2 mb-6'>
               {groupRows[0].map(row => renderSeats(row))}
             </div>
-          </div>
 
-          <div className='grid grid-cols-2 gap-11'>
+             <div className='grid grid-cols-2 gap-11'>
             {groupRows.slice(1).map((group,idx) => (
               <div key={idx}>
                 {group.map(row => renderSeats(row))}
               </div>
             ))}
           </div>
+          </div>
+
+          <button onClick={() => navigate('/my-bookings')} className='flex items-center gap-1 mt-20 px-10 py-3 text-sm bg-red-400 hover:bg-red-300 transition rounded-full font-medium cursor-pointer active:scale-95'>
+            Proceed to Checkout
+            <ArrowRightIcon strokeWidth={3} className='w-4 h-4'/>
+          </button>
+
+
          
       </div>
 
