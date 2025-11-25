@@ -14,11 +14,12 @@
   "dependencies": {
     "@clerk/express": "^1.7.48",
     "axios": "^1.13.1",
+    "clerk": "^0.8.3",
     "cloudinary": "^2.8.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
-    "inngest": "^3.45.1",
+    "inngest": "^3.46.0",
     "mongoose": "^8.19.2"
   },
   "devDependencies": {
