@@ -3,9 +3,9 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import { ClerkProvider } from '@clerk/clerk-react'
-// Импортируем Redux
 import { Provider } from 'react-redux'
 import store from '../src/store/store.js' 
+import { CustomThemeProvider } from './ThemeContext.jsx';
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY
 
@@ -15,12 +15,12 @@ if (!PUBLISHABLE_KEY) {
 
 createRoot(document.getElementById('root')).render(
   <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
-    {/* Provider должен быть внутри ClerkProvider, но снаружи BrowserRouter или внутри — не критично, 
-        но обычно его ставят ближе к корню */}
     <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+    <CustomThemeProvider>
+       <BrowserRouter>
+         <App />
+       </BrowserRouter>
+      </CustomThemeProvider>
     </Provider>
   </ClerkProvider>
 )
