@@ -1,12 +1,23 @@
 import React from "react"; 
 import { assets } from "../assets/assets";
+import { useTheme } from '@mui/material/styles'; // Импортируем хук темы
 
 const Footer = () => {
+    const theme = useTheme();
+    const isDark = theme.palette.mode === 'dark';
+
+    // Цвет текста: черный для светлой темы, серый для темной
+    const textColor = isDark ? 'text-gray-300' : 'text-black';
+    // Цвет линии: темно-серый для светлой темы, обычный серый для темной
+    const borderColor = isDark ? 'border-gray-500' : 'border-gray-300';
+
     return (
-      <footer className="px-6  md:px-16 lg:px-36 mt-40 w-full text-gray-300">
-            <div className="flex flex-col md:flex-row justify-between w-full gap-10 border-b border-gray-500 pb-14">
+      <footer className={`px-6 md:px-16 lg:px-36 mt-40 w-full ${textColor}`}>
+            <div className={`flex flex-col md:flex-row justify-between w-full gap-10 border-b ${borderColor} pb-14`}>
                 <div className="md:max-w-96">
-                    <img alt="" className="h-11" src={assets.logo} />
+                    {/* Если логотип черный, можно добавить инверсию для темной темы */}
+                    <img alt="" className={`h-11 ${isDark ? '' : 'brightness-0'}`} src={assets.logo} />
+                    
                     <p className="mt-6 text-sm">
                         Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                     </p>
@@ -15,14 +26,15 @@ const Footer = () => {
                         <img src={assets.appStore} alt="app store" className="h-9 w-auto " />
                     </div>
                 </div>
+
                 <div className="flex-1 flex items-start md:justify-end gap-20 md:gap-40">
                     <div>
                         <h2 className="font-semibold mb-5">Company</h2>
                         <ul className="text-sm space-y-2">
-                            <li><a href="#">Home</a></li>
-                            <li><a href="#">About us</a></li>
-                            <li><a href="#">Contact us</a></li>
-                            <li><a href="#">Privacy policy</a></li>
+                            <li><a href="#" className="hover:opacity-70 transition">Home</a></li>
+                            <li><a href="#" className="hover:opacity-70 transition">About us</a></li>
+                            <li><a href="#" className="hover:opacity-70 transition">Contact us</a></li>
+                            <li><a href="#" className="hover:opacity-70 transition">Privacy policy</a></li>
                         </ul>
                     </div>
                     <div>
@@ -35,10 +47,10 @@ const Footer = () => {
                 </div>
             </div>
             <p className="pt-4 text-center text-sm pb-5">
-                Copyright {new Date().getFullYear()} © <a href="#">Tomek</a>. All Right Reserved.
+                Copyright {new Date().getFullYear()} © <a href="#" className="font-medium">Tomek</a>. All Right Reserved.
             </p>
         </footer>
     )
 }
 
-export default Footer
+export default Footer;
