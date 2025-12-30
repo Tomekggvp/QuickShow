@@ -7,10 +7,8 @@ import BlurCircle from '../components/BlurCircle';
 const Favorite = () => {
   const { user, isLoaded, isSignedIn } = useUser();
 
-  // Пока Clerk проверяет сессию, ничего не рендерим
   if (!isLoaded) return null;
 
-  // Если пользователь не авторизован
   if (!isSignedIn) {
     return (
       <div className='flex flex-col items-center justify-center min-h-[60vh]'>
@@ -21,13 +19,13 @@ const Favorite = () => {
     );
   }
 
-  // Если авторизован, получаем данные из Clerk
+
   const favoriteIds = user?.unsafeMetadata?.favorites || [];
   const favoriteMovies = dummyShowsData.filter((movie) => 
     favoriteIds.includes(String(movie._id))
   );
 
-  // Если авторизован, но список пуст
+
   if (favoriteMovies.length === 0) {
     return (
       <div className='flex flex-col items-center justify-center min-h-[60vh]'>
@@ -37,7 +35,6 @@ const Favorite = () => {
     );
   }
 
-  // Если авторизован и есть фильмы
   return (
     <div className='relative my-40 mb-60 px-6 md:px-16 lg:px-40 xl:px-44 overflow-hidden min-h-[80vh]'>
       <BlurCircle top='150px' left='0px'/>

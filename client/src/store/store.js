@@ -1,10 +1,8 @@
 import { createStore, combineReducers } from 'redux';
 import trailerReducer from '../reducer/trailerReducer';
-import favoriteReducer from '../reducer/favoriteReducer'; 
 
 const rootReducer = combineReducers({
   trailer: trailerReducer,
-  favorites: favoriteReducer 
 });
 
 const store = createStore(
