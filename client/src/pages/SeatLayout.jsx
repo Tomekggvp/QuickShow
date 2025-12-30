@@ -60,9 +60,8 @@ const SeatLayout = () => {
         isPaid: false,
       }
 
-
       const currentBookings = user.unsafeMetadata.bookings || []
-      
+
       await user.update({
         unsafeMetadata: {
           ...user.unsafeMetadata,
@@ -71,7 +70,10 @@ const SeatLayout = () => {
       })
 
       toast.success("Booking confirmed!")
+      
       navigate('/my-bookings')
+      window.scrollTo(0, 0) 
+      
     } catch (error) {
       toast.error("Error saving booking")
       console.error(error)
