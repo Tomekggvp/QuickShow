@@ -68,8 +68,13 @@ const MovieDetails = () => {
               <PlayCircleIcon className='w-5 h-5' /> Watch Trailer
             </button>
             
-            <a href="#dateSelect" className='px-10 py-3 text-sm bg-primary hover:bg-red-500 transition rounded-md font-medium cursor-pointer active:scale-95 text-white'>
-              Buy Tickets
+            <a 
+                href="#dateSelect" 
+                className='inline-block px-10 py-3 text-sm bg-gradient-to-tr from-red-600 to-red-400 text-white rounded-lg font-semibold tracking-wide 
+                          shadow-lg shadow-red-500/30 hover:shadow-red-500/50 hover:bg-red-500 
+                          transition-all duration-300 cursor-pointer active:scale-95'
+              >
+                Buy Tickets
             </a>
             
             <button 
