@@ -24,7 +24,6 @@ const HeroSection = () => {
                 </div>
             </div>
 
-            {/* Для описания тоже зафиксирован цвет text-gray-300, чтобы он не стал черным в светлой теме */}
             <p className='max-w-md text-gray-300'>
                 In a post-apocalyptic world where cities ride on wheels and consume each other to survive, 
                 two people meet in London and try to stop conspiracy.

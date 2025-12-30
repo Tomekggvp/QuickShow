@@ -5,21 +5,20 @@ import { dummyTrailers } from '../assets/assets';
 import ReactPlayer from 'react-player';
 import BlurCircle from './BlurCircle';
 import { PlayCircleIcon } from 'lucide-react';
-import { useTheme } from '@mui/material/styles'; // 1. Импортируем хук темы
+import { useTheme } from '@mui/material/styles'; 
 
 const TrailerSection = () => {
   const dispatch = useDispatch();
-  const theme = useTheme(); // 2. Получаем доступ к теме
+  const theme = useTheme(); // 
   
-  // Проверяем, темная ли сейчас тема
+
   const isDark = theme.palette.mode === 'dark';
 
-  // Получаем текущий трейлер из Redux Store
   const currentTrailer = useSelector((state) => state.trailer.currentTrailer);
 
   return (
     <div className='px-6 md:px-16 lg:px-24 xl:px-44 py-20 overflow-hidden'>
-      {/* 3. Меняем класс цвета в зависимости от темы */}
+
       <p className={`${isDark ? 'text-gray-300' : 'text-black'} font-medium text-lg max-w-[960px]`}>
         Trailers
       </p>
@@ -27,10 +26,10 @@ const TrailerSection = () => {
       <div className='relative mt-6'>
         <BlurCircle top='-100px' right='-100px' />
         <ReactPlayer 
-          src={currentTrailer.videoUrl} // Исправлено: ReactPlayer использует url вместо src
+          src={currentTrailer.videoUrl} 
           controls={false} 
           className='mx-auto max-w-full' 
-          width="100%" // Сделал адаптивным (был фиксированный px)
+          width="100%" 
           style={{ maxWidth: '960px' }}
           height="540px"
         />
@@ -44,7 +43,6 @@ const TrailerSection = () => {
             onClick={() => dispatch(setCurrentTrailer(trailer))}
           >
             <img src={trailer.image} alt="trailer" className='rounded-lg w-full h-full object-cover brightness-75'/>
-            {/* Иконку тоже можно подкрасить, если нужно, чтобы она всегда была видна */}
             <PlayCircleIcon strokeWidth={1.6} className='absolute top-1/2 left-1/2 w-5 md:w-8 h-5 md:h-12 transform -translate-x-1/2 -translate-y-1/2 text-white' />
           </div>
         ))}

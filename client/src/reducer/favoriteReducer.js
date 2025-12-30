@@ -12,14 +12,13 @@ const favoriteReducer = (state = initialState, action) => {
       
       let updatedFavorites;
       if (isExist) {
-        // Удаляем из списка
+
         updatedFavorites = state.favorites.filter(id => id !== movieId);
       } else {
-        // Добавляем в список
+
         updatedFavorites = [...state.favorites, movieId];
       }
 
-      // Сохраняем на "жесткий диск" браузера
       localStorage.setItem('favoriteMovies', JSON.stringify(updatedFavorites));
 
       return {

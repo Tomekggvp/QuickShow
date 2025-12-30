@@ -2,13 +2,12 @@ import { StarIcon } from 'lucide-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import timeFormat from '../lib/timeFormat';
-import { useTheme } from '@mui/material/styles'; // Импортируем хук темы
+import { useTheme } from '@mui/material/styles'; 
 
 const MovieCard = ({movie}) => {
     const navigate = useNavigate();
-    const theme = useTheme(); // Получаем доступ к текущей теме
+    const theme = useTheme(); 
     
-    // Простая проверка: правда ли сейчас темный режим?
     const isDark = theme.palette.mode === 'dark';
 
     if (!movie || !movie.backdrop_path) return null;

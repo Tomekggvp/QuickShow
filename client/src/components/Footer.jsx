@@ -1,21 +1,20 @@
 import React from "react"; 
 import { assets } from "../assets/assets";
-import { useTheme } from '@mui/material/styles'; // Импортируем хук темы
+import { useTheme } from '@mui/material/styles'; 
 
 const Footer = () => {
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
-    // Цвет текста: черный для светлой темы, серый для темной
     const textColor = isDark ? 'text-gray-300' : 'text-black';
-    // Цвет линии: темно-серый для светлой темы, обычный серый для темной
+
     const borderColor = isDark ? 'border-gray-500' : 'border-gray-300';
 
     return (
       <footer className={`px-6 md:px-16 lg:px-36 mt-40 w-full ${textColor}`}>
             <div className={`flex flex-col md:flex-row justify-between w-full gap-10 border-b ${borderColor} pb-14`}>
                 <div className="md:max-w-96">
-                    {/* Если логотип черный, можно добавить инверсию для темной темы */}
+
                     <img alt="" className={`h-11 ${isDark ? '' : 'brightness-0'}`} src={assets.logo} />
                     
                     <p className="mt-6 text-sm">

@@ -4,14 +4,13 @@ import { useNavigate } from 'react-router-dom';
 import BlurCircle from './BlurCircle';
 import { dummyShowsData } from '../assets/assets';
 import MovieCard from './MovieCard';
-import { useTheme } from '@mui/material/styles'; // Импортируем хук темы
+import { useTheme } from '@mui/material/styles'; 
 
 const FeaturedSection = () => {
     const navigate = useNavigate();
     const theme = useTheme();
     const isDark = theme.palette.mode === 'dark';
 
-    // Текст станет черным в светлой теме и останется серым (или белым) в темной
     const textColor = isDark ? 'text-gray-300' : 'text-black';
 
     return (
@@ -20,10 +19,8 @@ const FeaturedSection = () => {
             <div className='relative flex items-center justify-between pt-20 pb-10'>
                 <BlurCircle top='0' right='-80px' />
                 
-                {/* Применяем textColor для Now Showing */}
                 <p className={`${textColor} font-medium text-lg`}>Now Showing</p>
                 
-                {/* Применяем textColor для View All */}
                 <button onClick={() => navigate('/movies')} className={`group flex items-center gap-2 text-sm ${textColor} cursor-pointer`}>
                     View All 
                     <ArrowRight className='group-hover:translate-x-0.5 transition w-4.5 h-4.5'/> 
