@@ -11,15 +11,20 @@ import { useColorMode } from '../ThemeContext'
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { user } = useUser()
+    const { user, isLoaded, isSignedIn } = useUser()
     const { openSignIn } = useClerk()
     const navigate = useNavigate()
+    
 
     const theme = useTheme()
     const { toggleColorMode } = useColorMode()
 
     const isDark = theme.palette.mode === 'dark';
     const textColor = isDark ? 'text-white' : 'text-black';
+
+    
+
+    
 
     return (
         <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
@@ -51,6 +56,9 @@ const Navbar = () => {
                 <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Home</Link>
                 <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Movies</Link>
                 <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>Favorites</Link>
+
+                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>My bookings</Link>
+
             </div>
 
             <div className='flex items-center gap-8'>
