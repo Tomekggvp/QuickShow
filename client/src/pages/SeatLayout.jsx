@@ -7,7 +7,8 @@ import isoTimeFormat from '../lib/isoTimeFormat'
 import BlurCircle from '../components/BlurCircle'
 import toast from 'react-hot-toast'
 import { useAuth, SignIn, useUser } from '@clerk/clerk-react'
-import axios from 'axios' // Импортируем Axios
+import axios from 'axios'
+import tmdb from '../services/tmdb' 
 
 const SeatLayout = () => {
   const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
@@ -22,17 +23,27 @@ const SeatLayout = () => {
   const { user } = useUser()
   const navigate = useNavigate()
 
-  // Получаем данные из .env
   const TG_TOKEN = import.meta.env.VITE_TELEGRAM_TOKEN
   const TG_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID
 
   const getShow = async () => {
-    const foundShow = dummyShowsData.find(s => s._id === id)
-    if (foundShow) {
-      setShow({
-        movie: foundShow,
-        dateTime: dummyDateTimeData
-      })
+    try {
+      const response = await tmdb.get(`/movie/${id}`);
+      
+      if (response.data) {
+        setShow({
+          movie: response.data, 
+          dateTime: dummyDateTimeData 
+        });
+      }
+    } catch (error) {
+      console.error("Error fetching movie for seats:", error);
+      const foundShow = dummyShowsData.find(s => s._id === id || s.id === Number(id));
+      if (foundShow) {
+        setShow({ movie: foundShow, dateTime: dummyDateTimeData });
+      } else {
+        toast.error("Movie not found");
+      }
     }
   }
 
@@ -43,12 +54,8 @@ const SeatLayout = () => {
     setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(s => s !== seatId) : [...prev, seatId])
   }
 
-  // Функция для отправки сообщения в Telegram
   const sendTelegramAlert = async (bookingData) => {
-    if (!TG_TOKEN || !TG_CHAT_ID) {
-      console.warn("Telegram credentials missing in .env");
-      return;
-    }
+    if (!TG_TOKEN || !TG_CHAT_ID) return;
 
     const message = `
 🚀 *New Order!*
@@ -60,7 +67,7 @@ const SeatLayout = () => {
 💰 *Total:* $${bookingData.amount}
 👤 *Email:* ${user.primaryEmailAddress.emailAddress}
 --------------------------
-✅ _Sent via Axios_
+
     `;
 
     try {
@@ -87,7 +94,12 @@ const SeatLayout = () => {
       const newBooking = {
         _id: `ID-${Date.now()}`,
         show: {
-          movie: show.movie,
+          movie: {
+            title: show.movie.title,
+            _id: show.movie.id || show.movie._id,
+            poster_path: show.movie.poster_path, 
+            runtime: show.movie.runtime
+          },
           showDateTime: selectedTime.time
         },
         amount: selectedSeats.length * 15,
@@ -95,7 +107,6 @@ const SeatLayout = () => {
         isPaid: false,
       }
 
-      // 1. Обновляем данные в Clerk
       const currentBookings = user.unsafeMetadata.bookings || []
       await user.update({
         unsafeMetadata: {
@@ -104,12 +115,8 @@ const SeatLayout = () => {
         }
       })
 
-      // 2. Отправляем уведомление в Telegram (Axios)
       await sendTelegramAlert(newBooking);
-
       toast.success("Booking confirmed!");
-      
-      // 3. Переход и скролл вверх
       navigate('/my-bookings');
       window.scrollTo(0, 0);
 
@@ -147,8 +154,9 @@ const SeatLayout = () => {
       <div className='flex flex-col md:flex-row px-6 md:px-16 lg:px-40 py-30'>
         {/* Sidebar */}
         <div className='w-60 bg-red-400/10 border border-red-400/20 rounded-lg py-10 h-max md:sticky md:top-30'>
-          <p className='text-lg font-semibold px-6'>Available Timings</p>
-          <div className='mt-5 space-y-1'>
+          <p className='text-lg font-semibold px-6 text-balance'>{show.movie.title}</p>
+          <p className='text-xs px-6 mb-4 opacity-60'>Select Timing</p>
+          <div className='mt-2 space-y-1'>
             {show.dateTime[date]?.map((item) => (
               <div
                 key={item.time}

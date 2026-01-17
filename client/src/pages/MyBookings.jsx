@@ -42,6 +42,12 @@ const MyBookings = () => {
     }
   }
 
+  const getImageUrl = (path) => {
+    if (!path) return 'https://via.placeholder.com/500x750?text=No+Poster';
+    if (path.startsWith('http')) return path;
+    return `https://image.tmdb.org/t/p/w500${path}`;
+  }
+
   if (!isLoaded || isLoading) return <Loading />
 
   return (
@@ -56,67 +62,73 @@ const MyBookings = () => {
           <div className='text-center mt-20 text-gray-500'>Please login to see bookings.</div>
         ) : bookings.length > 0 ? (
           <div className='flex flex-col gap-6'>
-            {bookings.map((item) => (
-              <div key={item._id} className='flex flex-col md:flex-row bg-white/40 dark:bg-gray-800/40 border border-red-400/20 rounded-3xl overflow-hidden backdrop-blur-md hover:shadow-xl transition-all duration-300 relative'>
-                
-                <button 
-                  onClick={() => openDeleteModal(item._id)}
-                  className='absolute top-4 right-4 z-10 p-2.5 bg-white/80 dark:bg-gray-900/80 text-gray-400 hover:text-red-500 rounded-full shadow-sm transition-all cursor-pointer'
-                >
-                  <Trash2 size={18} />
-                </button>
+            {bookings.map((item) => {
+              const movieId = item.show.movie.id || item.show.movie._id;
+              
+              return (
+                <div key={item._id} className='flex flex-col md:flex-row bg-white/40 dark:bg-gray-800/40 border border-red-400/20 rounded-3xl overflow-hidden backdrop-blur-md hover:shadow-xl transition-all duration-300 relative'>
+                  
+                  <button 
+                    onClick={() => openDeleteModal(item._id)}
+                    className='absolute top-4 right-4 z-10 p-2.5 bg-white/80 dark:bg-gray-900/80 text-gray-400 hover:text-red-500 rounded-full shadow-sm transition-all cursor-pointer'
+                  >
+                    <Trash2 size={18} />
+                  </button>
 
-                <div 
-                  onClick={() => navigate(`/movies/${item.show.movie._id}`)} 
-                  className='w-full md:w-48 h-56 md:h-auto overflow-hidden cursor-pointer group'
-                >
-                  <img 
-                    src={item.show.movie.poster_path} 
-                    alt={item.show.movie.title} 
-                    className='w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500' 
-                  />
-                </div>
-
-                <div className='flex-1 p-6 flex flex-col justify-between'>
-                  <div>
-
-                    <h2 
-                      onClick={() => navigate(`/movies/${item.show.movie._id}`)}
-                      className='text-xl font-bold mb-1 pr-10 cursor-pointer hover:text-red-500 transition-colors'
-                    >
-                      {item.show.movie.title}
-                    </h2>
-                    <p className='text-gray-500 text-sm mb-4'>{timeFormat(item.show.movie.runtime)}</p>
-                    
-                    <div className='flex flex-wrap gap-3 mb-4'>
-                      <div className='flex items-center gap-2 bg-red-400/10 px-3 py-1.5 rounded-xl text-red-500 text-xs font-bold'>
-                        <Calendar size={14} />
-                        {dateFormat(item.show.showDateTime)}
-                      </div>
-                      <div className='flex items-center gap-2 bg-blue-400/10 px-3 py-1.5 rounded-xl text-blue-500 text-xs font-bold'>
-                        <Ticket size={14} />
-                        {item.bookedSeats.length} Tickets
-                      </div>
-                    </div>
+                  <div 
+                    onClick={() => navigate(`/movies/${movieId}`)} 
+                    className='w-full md:w-48 h-56 md:h-auto overflow-hidden cursor-pointer group bg-gray-200 dark:bg-gray-700'
+                  >
+                    <img 
+                      src={getImageUrl(item.show.movie.poster_path)} 
+                      alt={item.show.movie.title} 
+                      className='w-full h-full object-cover object-center transform group-hover:scale-110 transition-transform duration-500' 
+                      onError={(e) => { e.target.src = 'https://via.placeholder.com/500x750?text=Image+Error' }}
+                    />
                   </div>
 
-                  <div className='flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-4'>
+                  <div className='flex-1 p-6 flex flex-col justify-between'>
                     <div>
-                      <p className='text-gray-400 text-[10px] uppercase tracking-widest'>Seats</p>
-                      <p className='font-bold text-gray-800 dark:text-gray-200'>{item.bookedSeats.join(", ")}</p>
+                      <h2 
+                        onClick={() => navigate(`/movies/${movieId}`)}
+                        className='text-xl font-bold mb-1 pr-10 cursor-pointer hover:text-red-500 transition-colors'
+                      >
+                        {item.show.movie.title}
+                      </h2>
+                      <p className='text-gray-500 text-sm mb-4'>
+                        {item.show.movie.runtime ? timeFormat(item.show.movie.runtime) : 'Movie'}
+                      </p>
+                      
+                      <div className='flex flex-wrap gap-3 mb-4'>
+                        <div className='flex items-center gap-2 bg-red-400/10 px-3 py-1.5 rounded-xl text-red-500 text-xs font-bold'>
+                          <Calendar size={14} />
+                          {dateFormat(item.show.showDateTime)}
+                        </div>
+                        <div className='flex items-center gap-2 bg-blue-400/10 px-3 py-1.5 rounded-xl text-blue-500 text-xs font-bold'>
+                          <Ticket size={14} />
+                          {item.bookedSeats.length} Tickets
+                        </div>
+                      </div>
                     </div>
-                    <div className='text-right'>
-                      <p className='text-2xl font-black text-red-500'>{currency}{item.amount}</p>
-                      {!item.isPaid && (
-                        <button className='mt-1 text-xs font-bold text-blue-500 hover:underline cursor-pointer'>
-                          Pay Now →
-                        </button>
-                      )}
+
+                    <div className='flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-4'>
+                      <div>
+                        <p className='text-gray-400 text-[10px] uppercase tracking-widest'>Seats</p>
+                        <p className='font-bold text-gray-800 dark:text-gray-200'>{item.bookedSeats.join(", ")}</p>
+                      </div>
+                      <div className='text-right'>
+                        <p className='text-2xl font-black text-red-500'>{currency}{item.amount}</p>
+                        {!item.isPaid && (
+                          <button className='mt-1 text-xs font-bold text-blue-500 hover:underline cursor-pointer'>
+                            Pay Now →
+                          </button>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         ) : (
           <div className='text-center mt-20 py-20 bg-white/20 rounded-3xl border-2 border-dashed border-gray-200'>
@@ -125,7 +137,7 @@ const MyBookings = () => {
         )}
       </div>
 
-      {/* MODAL */}
+      {/* MODAL CANCEL */}
       {deleteModal.isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/60 backdrop-blur-md" onClick={closeDeleteModal}></div>

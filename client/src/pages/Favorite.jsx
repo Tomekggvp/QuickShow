@@ -1,38 +1,92 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUser } from '@clerk/clerk-react'; 
-import { dummyShowsData } from '../assets/assets';
+import { motion, AnimatePresence } from 'framer-motion'; 
 import MovieCard from '../components/MovieCard';
 import BlurCircle from '../components/BlurCircle';
+import Loading from '../components/Loading';
+import tmdb from '../services/tmdb';
 
 const Favorite = () => {
   const { user, isLoaded, isSignedIn } = useUser();
+  const [favoriteMovies, setFavoriteMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  if (!isLoaded) return null;
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1, 
+      },
+    },
+  };
 
-  if (!isSignedIn) {
-    return (
-      <div className='flex flex-col items-center justify-center min-h-[60vh]'>
-        <h1 className='text-3xl font-bold text-center'>No favorite movies yet</h1>
-        <p className='text-gray-500 mt-2'>Please log in to your account.</p>
-        <p className='text-gray-500 mt-2'>And start adding movies to your favorites!</p>
-      </div>
-    );
-  }
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100 },
+    },
+    exit: { scale: 0.8, opacity: 0 }, 
+  };
+
+  useEffect(() => {
+    const fetchFavoriteMovies = async () => {
+      const favoriteIds = user?.unsafeMetadata?.favorites || [];
+      
+      if (favoriteIds.length === 0) {
+        setFavoriteMovies([]);
+        return;
+      }
+
+      setIsLoading(true);
+      try {
+        const moviePromises = favoriteIds.map((id) =>
+          tmdb.get(`/movie/${id}`).catch((err) => {
+            console.error(`Failed to fetch movie ${id}:`, err);
+            return null;
+          })
+        );
+
+        const responses = await Promise.all(moviePromises);
+        const moviesData = responses
+          .filter((res) => res !== null)
+          .map((res) => res.data);
+
+        setFavoriteMovies(moviesData);
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    if (isLoaded && isSignedIn) {
+      fetchFavoriteMovies();
+    }
+  }, [user?.unsafeMetadata?.favorites, isLoaded, isSignedIn]);
+
+  if (!isLoaded || isLoading) return <Loading />;
 
 
-  const favoriteIds = user?.unsafeMetadata?.favorites || [];
-  const favoriteMovies = dummyShowsData.filter((movie) => 
-    favoriteIds.includes(String(movie._id))
+  const EmptyState = ({ title, sub }) => (
+    <motion.div 
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className='flex flex-col items-center justify-center min-h-[60vh] pt-20'
+    >
+      <h1 className='text-3xl font-bold text-center'>{title}</h1>
+      <p className='text-gray-500 mt-2 text-center'>{sub}</p>
+    </motion.div>
   );
 
+  if (!isSignedIn) {
+    return <EmptyState title="No favorite movies yet" sub="Please log in to your account and start adding movies!" />;
+  }
 
   if (favoriteMovies.length === 0) {
-    return (
-      <div className='flex flex-col items-center justify-center min-h-[60vh]'>
-        <h1 className='text-3xl font-bold text-center'>Your list is empty</h1>
-        <p className='text-gray-500 mt-2'>You haven't added any movies to your favorites yet.</p>
-      </div>
-    );
+    return <EmptyState title="Your list is empty" sub="You haven't added any movies to your favorites yet." />;
   }
 
   return (
@@ -40,13 +94,44 @@ const Favorite = () => {
       <BlurCircle top='150px' left='0px'/>
       <BlurCircle bottom='50px' right='50px'/>
       
-      <h1 className='text-lg font-medium my-4'>Your Favorite Movies</h1>
+
+      <motion.div 
+        initial={{ x: -50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        className='flex justify-between items-center mb-12'
+      >
+        <div>
+          <h1 className='text-3xl font-bold'>Your Favorites</h1>
+          <p className='text-red-500 text-sm font-medium mt-1 uppercase tracking-wider'>Personal Collection</p>
+        </div>
+        <motion.span 
+          whileHover={{ scale: 1.1 }}
+          className='text-sm font-bold text-white bg-red-500 px-4 py-1.5 rounded-full shadow-lg shadow-red-500/20'
+        >
+          {favoriteMovies.length} {favoriteMovies.length === 1 ? 'Movie' : 'Movies'}
+        </motion.span>
+      </motion.div>
       
-      <div className='flex flex-wrap max-sm:justify-center gap-8'>
-        {favoriteMovies.map((movie) => (
-          <MovieCard movie={movie} key={movie._id}/>
-        ))}
-      </div>
+      <motion.div 
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className='flex flex-wrap max-sm:justify-center gap-10'
+      >
+        <AnimatePresence mode='popLayout'>
+          {favoriteMovies.map((movie) => (
+            <motion.div
+              layout 
+              key={movie.id || movie._id}
+              variants={itemVariants}
+              whileHover={{ y: -10 }} 
+              exit="exit"
+            >
+              <MovieCard movie={movie} />
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 };
