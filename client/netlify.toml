@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "/tmdb-api/*"
+  to = "https://api.themoviedb.org/3/:splat"
+  status = 200
+  force = true
