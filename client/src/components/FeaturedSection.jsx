@@ -28,16 +28,26 @@ const FeaturedSection = () => {
                 ]);
 
                 const genreMap = {};
-                genresRes.data.genres.forEach(g => {
-                    genreMap[g.id] = g.name;
-                });
+                if (genresRes.data?.genres) {
+                    genresRes.data.genres.forEach(g => {
+                        genreMap[g.id] = g.name;
+                    });
+                }
 
-                const formattedMovies = moviesRes.data.results.slice(0, 5).map(movie => ({
-                    ...movie,
-                    genres: movie.genre_ids.map(id => ({ name: genreMap[id] || "Movie" }))
-                }));
+                const results = moviesRes.data?.results;
+                if (results && Array.isArray(results)) {
+                    const formattedMovies = results.slice(0, 5).map(movie => ({
+                        ...movie,
 
-                setMovies(formattedMovies);
+                        genres: (movie.genre_ids || []).map(id => ({ 
+                            name: genreMap[id] || "Movie" 
+                        }))
+                    }));
+                    setMovies(formattedMovies);
+                } else {
+                    console.warn("No movies found in response");
+                }
+
             } catch (error) {
                 console.error("Error loading featured content:", error);
             } finally {
@@ -61,19 +71,22 @@ const FeaturedSection = () => {
                 </button>
             </div>
 
-        
             <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 mt-8 justify-items-center'>
-                {movies.map((movie) => 
-                    <MovieCard key={movie.id} movie={movie} />
+                {movies?.length > 0 ? (
+                    movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)
+                ) : (
+                    <p className={textColor}>No movies available at the moment.</p>
                 )}
             </div>
 
-            <div className='flex justify-center mt-20 text-white'>
-                <button onClick={() => {navigate('/movies'); window.scrollTo(0,0)}}
-                    className='px-10 py-3 text-sm bg-red-400 hover:bg-red-300 transition rounded-md font-medium cursor-pointer'>
-                    Show more
-                </button>
-            </div>
+            {movies?.length > 0 && (
+                <div className='flex justify-center mt-20 text-white'>
+                    <button onClick={() => {navigate('/movies'); window.scrollTo(0,0)}}
+                        className='px-10 py-3 text-sm bg-red-400 hover:bg-red-300 transition rounded-md font-medium cursor-pointer'>
+                        Show more
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

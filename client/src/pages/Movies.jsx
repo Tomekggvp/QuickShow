@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import MovieCard from '../components/MovieCard';
 import BlurCircle from '../components/BlurCircle';
 import Loading from '../components/Loading'; 
@@ -19,9 +19,13 @@ const Movies = () => {
     try {
       const response = await tmdb.get('/genre/movie/list');
       const genreMap = {};
-      response.data.genres.forEach(g => { genreMap[g.id] = g.name; });
+      if (response.data?.genres) {
+        response.data.genres.forEach(g => { genreMap[g.id] = g.name; });
+      }
       setGenres(genreMap);
-    } catch (error) { console.error(error); }
+    } catch (error) { 
+      console.error("Genres fetch error:", error); 
+    }
   };
 
   const fetchMovies = async (pageNum = 1, append = false) => {
@@ -30,10 +34,11 @@ const Movies = () => {
       else setIsLoading(true);
 
       const response = await tmdb.get('/movie/now_playing', { params: { page: pageNum } });
+      const results = response.data?.results || [];
 
-      const processedMovies = response.data.results.map(movie => ({
+      const processedMovies = results.map(movie => ({
         ...movie,
-        genres: movie.genre_ids.map(id => ({ name: genres[id] || "Movie" }))
+        genres: (movie.genre_ids || []).map(id => ({ name: genres[id] || "Movie" }))
       }));
 
       if (append) {
@@ -42,9 +47,9 @@ const Movies = () => {
         setMovies(processedMovies);
       }
       
-      setTotalPages(response.data.total_pages);
+      setTotalPages(response.data?.total_pages || 1);
     } catch (error) {
-      console.error(error);
+      console.error("Movies fetch error:", error);
     } finally {
       setIsLoading(false);
       setIsFetchingMore(false);
@@ -54,12 +59,11 @@ const Movies = () => {
   useEffect(() => { fetchGenres(); }, []);
 
   useEffect(() => {
-    if (Object.keys(genres).length > 0) fetchMovies(1, false);
+    if (Object.keys(genres).length >= 0) fetchMovies(1, false);
   }, [genres]);
 
   useEffect(() => {
     if (page > 1 && !isFetchingMore) {
-
       lastMovieRef.current?.scrollIntoView({ 
         behavior: 'smooth', 
         block: 'start' 
@@ -86,8 +90,7 @@ const Movies = () => {
       </div>
 
       <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 justify-items-center'>
-        {movies.map((movie, index) => {
- 
+        {movies?.map((movie, index) => {
           const isFirstInNewBatch = index === movies.length - 20; 
 
           return (
@@ -104,10 +107,13 @@ const Movies = () => {
         })}
       </div>
 
-
       <div className="h-1" />
 
-      {page < totalPages && (
+      {!isLoading && movies.length === 0 && (
+        <div className="text-center mt-10">No movies found. Try checking your connection.</div>
+      )}
+
+      {page < totalPages && movies.length > 0 && (
         <div className='flex flex-col items-center mt-20'>
           <button 
             onClick={handleShowMore}
