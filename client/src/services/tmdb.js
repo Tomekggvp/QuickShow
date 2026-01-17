@@ -9,7 +9,7 @@ const tmdb = axios.create({
     ? 'https://api.themoviedb.org/3' 
     : window.location.origin + '/tmdb-api',
   params: {
-    api_key: import.meta.env.VITE_TMDB_API_KEY,
+    api_key: 'f53964ee2cf1b5f1f14af077bbff023e',
     language: 'en-US',
   },
 });
