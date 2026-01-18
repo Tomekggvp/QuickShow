@@ -16,8 +16,7 @@ const MovieCard = ({ movie }) => {
 
     if (!movie) return null;
 
-    // ИСПРАВЛЕНО: Кинопоиск присылает готовые ссылки. 
-    // Если ссылка начинается на http, берем её как есть.
+
     const imagePath = movie.poster_path || 'https://via.placeholder.com/500x750?text=No+Image';
 
     const handleLike = (e) => {
@@ -51,7 +50,7 @@ const MovieCard = ({ movie }) => {
                 src={imagePath} 
                 className='rounded-lg h-52 w-full object-cover bg-gray-200 dark:bg-gray-700' 
                 alt={movie.title}
-                // Заглушка, если картинка не загрузится
+     
                 onError={(e) => { e.target.src = 'https://via.placeholder.com/500x750?text=No+Image' }}
             />
 
@@ -60,7 +59,7 @@ const MovieCard = ({ movie }) => {
             <p className={`text-xs font-medium mt-2 ${isDark ? 'text-gray-400' : 'text-amber-800'}`}>
                 {movie.release_date || '2024'} 
                 {" • "}
-                {/* ИСПРАВЛЕНО: У Кинопоиска жанр лежит в поле .genre */}
+            
                 {movie.genres && Array.isArray(movie.genres) 
                     ? movie.genres.slice(0, 2).map(g => g.genre || g.name).join(" | ") 
                     : "Movie"}
@@ -74,7 +73,7 @@ const MovieCard = ({ movie }) => {
                 </div>
                 <p className='flex items-center gap-1 text-sm font-bold'>
                     <StarIcon className='w-4 h-4 text-red-400 fill-red-400' />
-                    {/* ИСПРАВЛЕНО: Обработка рейтинга */}
+
                     {movie.vote_average ? Number(movie.vote_average).toFixed(1) : '0.0'}
                 </p>
             </div>
