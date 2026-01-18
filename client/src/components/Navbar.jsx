@@ -36,7 +36,11 @@ const Navbar = () => {
     return (
         <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
 
-            <Link to='/' className='max-md:flex-1'>
+           
+            <Link 
+                to='/' 
+                className={`max-md:flex-1 transition-opacity duration-300 ${showSearch ? 'max-sm:opacity-0 max-sm:pointer-events-none' : 'opacity-100'}`}
+            >
                 <img 
                     src={assets.logo} 
                     alt="Logo" 
@@ -44,6 +48,7 @@ const Navbar = () => {
                 />
             </Link>
 
+            {/* Menu Links */}
             <div className={`
                 max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 
                 flex flex-col md:flex-row items-center max-md:justify-center gap-8 min-md:px-8 py-3 
@@ -72,9 +77,9 @@ const Navbar = () => {
                             onSubmit={handleSearch}
                             className={`
                                 flex items-center transition-all duration-500 ease-in-out overflow-hidden
-                                border-red-400
+                                border-red-400 bg-transparent
                                 ${showSearch 
-                                    ? 'w-40 md:w-64 px-3 py-1.5 border-b opacity-100 mr-10' 
+                                    ? 'w-48 sm:w-56 md:w-64 px-3 py-1.5 border-b opacity-100 mr-10' 
                                     : 'w-0 opacity-0 border-b-0 mr-0'}
                             `}
                         >
@@ -89,10 +94,14 @@ const Navbar = () => {
                         </form>
                     </div>
 
-                    <SearchIcon 
-                        className={`w-6 h-6 cursor-pointer transition-colors z-10 ${showSearch ? 'text-red-400' : textColor}`} 
-                        onClick={() => setShowSearch(!showSearch)}
-                    />
+                  
+                    <div className='z-10 cursor-pointer' onClick={() => setShowSearch(!showSearch)}>
+                        {showSearch ? (
+                            <XIcon className={`w-6 h-6 text-red-400 transition-all`} />
+                        ) : (
+                            <SearchIcon className={`w-6 h-6 transition-colors ${textColor}`} />
+                        )}
+                    </div>
                 </div>
 
                 <IconButton onClick={toggleColorMode} sx={{ color: 'inherit' }} className="max-md:hidden">
