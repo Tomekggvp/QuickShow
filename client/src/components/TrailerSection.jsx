@@ -20,7 +20,7 @@ const TrailerSection = () => {
     <div className='px-6 md:px-16 lg:px-24 xl:px-44 py-20 overflow-hidden'>
 
       <p className={`${isDark ? 'text-gray-300' : 'text-black'} font-medium text-lg max-w-[960px]`}>
-        Trailers
+        Трейлеры
       </p>
 
       <div className='relative mt-6'>

@@ -25,15 +25,15 @@ const HeroSection = () => {
             </div>
 
             <p className='max-w-md text-gray-300'>
-                In a post-apocalyptic world where cities ride on wheels and consume each other to survive, 
-                two people meet in London and try to stop conspiracy.
+                В постапокалиптическом мире, где города передвигаются на колесах и пожирают друг друга, чтобы выжить,
+                двое людей встречаются в Лондоне и пытаются остановить заговор.
             </p>
 
             <button 
                 onClick={() => navigate('/movies')} 
                 className='flex items-center gap-1 px-6 py-3 text-sm bg-red-400 hover:bg-red-300 transition rounded-full font-medium cursor-pointer text-white'
             >
-                Explore Movies
+                Исследуйте фильмы
                 <ArrowRight className='w-5 h-5' />
             </button>
         </div>

@@ -1,73 +1,78 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets'
-import Loading from '../components/Loading'
-import { ArrowRightIcon, ClockIcon, XIcon } from 'lucide-react'
-import isoTimeFormat from '../lib/isoTimeFormat'
-import BlurCircle from '../components/BlurCircle'
-import toast from 'react-hot-toast'
-import { useAuth, SignIn, useUser } from '@clerk/clerk-react'
-import axios from 'axios'
-import tmdb from '../services/tmdb' 
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { assets, dummyDateTimeData, dummyShowsData } from '../assets/assets';
+import Loading from '../components/Loading';
+import { ArrowRightIcon, ClockIcon, XIcon } from 'lucide-react';
+import isoTimeFormat from '../lib/isoTimeFormat';
+import BlurCircle from '../components/BlurCircle';
+import toast from 'react-hot-toast';
+import { useAuth, SignIn, useUser } from '@clerk/clerk-react';
+import axios from 'axios';
+import kinopoisk from '../services/kinopoisk'; 
 
 const SeatLayout = () => {
-  const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]]
-  const { id, date } = useParams()
+  const groupRows = [["A", "B"], ["C", "D"], ["E", "F"], ["G", "H"], ["I", "J"]];
+  const { id, date } = useParams();
 
-  const [selectedSeats, setSelectedSeats] = useState([])
-  const [selectedTime, setSelectedTime] = useState(null)
-  const [show, setShow] = useState(null)
-  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [selectedSeats, setSelectedSeats] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(null);
+  const [show, setShow] = useState(null);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
-  const { isLoaded, isSignedIn } = useAuth()
-  const { user } = useUser()
-  const navigate = useNavigate()
+  const { isLoaded, isSignedIn } = useAuth();
+  const { user } = useUser();
+  const navigate = useNavigate();
 
-  const TG_TOKEN = import.meta.env.VITE_TELEGRAM_TOKEN
-  const TG_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID
+  const TG_TOKEN = import.meta.env.VITE_TELEGRAM_TOKEN;
+  const TG_CHAT_ID = import.meta.env.VITE_TELEGRAM_CHAT_ID;
 
   const getShow = async () => {
     try {
-      const response = await tmdb.get(`/movie/${id}`);
+      const response = await kinopoisk.get(`/films/${id}`);
       
       if (response.data) {
         setShow({
-          movie: response.data, 
+          movie: {
+            title: response.data.nameRu || response.data.nameEn,
+            id: response.data.kinopoiskId,
+            poster_path: response.data.posterUrl,
+            runtime: response.data.filmLength
+          }, 
           dateTime: dummyDateTimeData 
         });
       }
     } catch (error) {
       console.error("Error fetching movie for seats:", error);
+      // Фолбэк на старые данные, если API недоступен
       const foundShow = dummyShowsData.find(s => s._id === id || s.id === Number(id));
       if (foundShow) {
         setShow({ movie: foundShow, dateTime: dummyDateTimeData });
       } else {
-        toast.error("Movie not found");
+        toast.error("Фильм не найден");
       }
     }
-  }
+  };
 
   const handleSeatClick = (seatId) => {
-    if (!selectedTime) return toast.error("Please select time first")
-    if (!selectedSeats.includes(seatId) && selectedSeats.length > 4) return toast.error("Max 5 seats")
+    if (!selectedTime) return toast.error("Сначала выберите время сеанса");
+    if (!selectedSeats.includes(seatId) && selectedSeats.length > 4) return toast.error("Максимум 5 мест");
 
-    setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(s => s !== seatId) : [...prev, seatId])
-  }
+    setSelectedSeats(prev => prev.includes(seatId) ? prev.filter(s => s !== seatId) : [...prev, seatId]);
+  };
 
   const sendTelegramAlert = async (bookingData) => {
     if (!TG_TOKEN || !TG_CHAT_ID) return;
 
     const message = `
-🚀 *New Order!*
+🚀 *Новый заказ!*
 --------------------------
-🎬 *Movie:* ${bookingData.show.movie.title}
-📅 *Date:* ${date}
-⏰ *Time:* ${isoTimeFormat(bookingData.show.showDateTime)}
-💺 *Seats:* ${bookingData.bookedSeats.join(', ')}
-💰 *Total:* $${bookingData.amount}
+🎬 *Фильм:* ${bookingData.show.movie.title}
+📅 *Дата:* ${date}
+⏰ *Время:* ${isoTimeFormat(bookingData.show.showDateTime)}
+💺 *Места:* ${bookingData.bookedSeats.join(', ')}
+💰 *Сумма:* $${bookingData.amount}
 👤 *Email:* ${user.primaryEmailAddress.emailAddress}
 --------------------------
-
     `;
 
     try {
@@ -79,16 +84,16 @@ const SeatLayout = () => {
     } catch (error) {
       console.error("Telegram notification failed:", error);
     }
-  }
+  };
 
   const handleProceedToCheckout = async () => {
-    if (!isLoaded) return
+    if (!isLoaded) return;
     if (!isSignedIn) {
-      setShowAuthModal(true)
-      return
+      setShowAuthModal(true);
+      return;
     }
-    if (!selectedTime) return toast.error("Please select a time")
-    if (selectedSeats.length === 0) return toast.error("Please select seats")
+    if (!selectedTime) return toast.error("Выберите время сеанса");
+    if (selectedSeats.length === 0) return toast.error("Выберите места");
 
     try {
       const newBooking = {
@@ -96,7 +101,7 @@ const SeatLayout = () => {
         show: {
           movie: {
             title: show.movie.title,
-            _id: show.movie.id || show.movie._id,
+            _id: show.movie.id,
             poster_path: show.movie.poster_path, 
             runtime: show.movie.runtime
           },
@@ -105,28 +110,28 @@ const SeatLayout = () => {
         amount: selectedSeats.length * 15,
         bookedSeats: selectedSeats,
         isPaid: false,
-      }
+      };
 
-      const currentBookings = user.unsafeMetadata.bookings || []
+      const currentBookings = user.unsafeMetadata.bookings || [];
       await user.update({
         unsafeMetadata: {
           ...user.unsafeMetadata,
           bookings: [newBooking, ...currentBookings]
         }
-      })
+      });
 
       await sendTelegramAlert(newBooking);
-      toast.success("Booking confirmed!");
+      toast.success("Бронирование подтверждено!");
       navigate('/my-bookings');
       window.scrollTo(0, 0);
 
     } catch (error) {
-      toast.error("Error saving booking");
+      toast.error("Ошибка при сохранении бронирования");
       console.error(error);
     }
-  }
+  };
 
-  useEffect(() => { getShow() }, [id])
+  useEffect(() => { getShow() }, [id]);
 
   const renderSeats = (row, count = 9) => (
     <div key={row} className='flex gap-2 mt-2'>
@@ -142,12 +147,12 @@ const SeatLayout = () => {
           >
             {seatId}
           </button>
-        )
+        );
       })}
     </div>
-  )
+  );
 
-  if (!isLoaded || !show) return <Loading />
+  if (!isLoaded || !show) return <Loading />;
 
   return (
     <>
@@ -155,7 +160,7 @@ const SeatLayout = () => {
         {/* Sidebar */}
         <div className='w-60 bg-red-400/10 border border-red-400/20 rounded-lg py-10 h-max md:sticky md:top-30'>
           <p className='text-lg font-semibold px-6 text-balance'>{show.movie.title}</p>
-          <p className='text-xs px-6 mb-4 opacity-60'>Select Timing</p>
+          <p className='text-xs px-6 mb-4 opacity-60'>Выберите время</p>
           <div className='mt-2 space-y-1'>
             {show.dateTime[date]?.map((item) => (
               <div
@@ -174,9 +179,9 @@ const SeatLayout = () => {
         {/* Seats Grid */}
         <div className='relative flex-1 flex flex-col items-center max-md:mt-16'>
           <BlurCircle top='-100px' left='-100px' />
-          <h1 className='text-2xl font-semibold mb-4'>Select your seat</h1>
+          <h1 className='text-2xl font-semibold mb-4'>Выберите места</h1>
           <img src={assets.screenImage} alt="screen" className='w-full max-w-md' />
-          <p className='text-gray-400 text-xs mb-6'>SCREEN SIDE</p>
+          <p className='text-gray-400 text-xs mb-6'>ЭКРАН</p>
 
           <div className='flex flex-col items-center mt-10 text-xs text-gray-300'>
             {groupRows.map((group, idx) => (
@@ -190,7 +195,7 @@ const SeatLayout = () => {
             onClick={handleProceedToCheckout}
             className='flex items-center gap-2 mt-20 px-12 py-4 text-sm bg-red-400 hover:bg-red-500 transition rounded-full font-bold cursor-pointer text-white shadow-lg active:scale-95'
           >
-            Confirm Booking
+            Забронировать
             <ArrowRightIcon className='w-4 h-4' />
           </button>
         </div>
@@ -201,7 +206,7 @@ const SeatLayout = () => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-2xl max-w-md w-full relative shadow-2xl">
             <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="text-xl font-bold text-gray-800">Please Sign In</h2>
+              <h2 className="text-xl font-bold text-gray-800">Пожалуйста, войдите</h2>
               <button onClick={() => setShowAuthModal(false)} className="p-2 hover:bg-gray-100 rounded-full transition text-gray-400">
                 <XIcon className="w-5 h-5" />
               </button>
@@ -213,7 +218,7 @@ const SeatLayout = () => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default SeatLayout
+export default SeatLayout;

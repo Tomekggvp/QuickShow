@@ -56,10 +56,10 @@ const MyBookings = () => {
       <BlurCircle bottom="0" right='-100px'/>
       
       <div className='max-w-4xl mx-auto'>
-        <h1 className='text-2xl md:text-3xl font-bold mb-8 text-center md:text-left'>My Bookings</h1>
+        <h1 className='text-2xl md:text-3xl font-bold mb-8 text-center md:text-left'>Бронирования</h1>
 
         {!isSignedIn ? (
-          <div className='text-center mt-20 text-gray-500'>Please login to see bookings.</div>
+          <div className='text-center mt-20 text-gray-500'>Пожалуйста, войдите в систему, чтобы просмотреть бронирования.</div>
         ) : bookings.length > 0 ? (
           <div className='flex flex-col gap-6'>
             {bookings.map((item) => {
@@ -120,7 +120,7 @@ const MyBookings = () => {
                         <p className='text-2xl font-black text-red-500'>{currency}{item.amount}</p>
                         {!item.isPaid && (
                           <button className='mt-1 text-xs font-bold text-blue-500 hover:underline cursor-pointer'>
-                            Pay Now →
+                            Оплатить сейчас →
                           </button>
                         )}
                       </div>
@@ -132,7 +132,7 @@ const MyBookings = () => {
           </div>
         ) : (
           <div className='text-center mt-20 py-20 bg-white/20 rounded-3xl border-2 border-dashed border-gray-200'>
-            <p className='text-gray-400'>No bookings yet. Time to watch something!</p>
+            <p className='text-gray-400'>Пока нет никаких бронирований. Самое время что-нибудь посмотреть!</p>
           </div>
         )}
       </div>

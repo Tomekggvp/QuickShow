@@ -16,16 +16,13 @@ const MovieCard = ({ movie }) => {
 
     if (!movie) return null;
 
-    const imagePath = movie.backdrop_path?.startsWith('http') 
-        ? movie.backdrop_path 
-        : (movie.backdrop_path || movie.poster_path 
-            ? `https://image.tmdb.org/t/p/w500${movie.backdrop_path || movie.poster_path}`
-            : 'https://via.placeholder.com/500x281?text=No+Image');
+    // ИСПРАВЛЕНО: Кинопоиск присылает готовые ссылки. 
+    // Если ссылка начинается на http, берем её как есть.
+    const imagePath = movie.poster_path || 'https://via.placeholder.com/500x750?text=No+Image';
 
     const handleLike = (e) => {
         e.stopPropagation(); 
         e.preventDefault();
-        
         toggleFavorite(movieId, movie.title); 
     };
 
@@ -54,16 +51,18 @@ const MovieCard = ({ movie }) => {
                 src={imagePath} 
                 className='rounded-lg h-52 w-full object-cover bg-gray-200 dark:bg-gray-700' 
                 alt={movie.title}
-                onError={(e) => { e.target.src = 'https://via.placeholder.com/500x281?text=No+Image' }}
+                // Заглушка, если картинка не загрузится
+                onError={(e) => { e.target.src = 'https://via.placeholder.com/500x750?text=No+Image' }}
             />
 
             <p className='font-bold mt-3 truncate'>{movie.title || 'Untitled'}</p>
 
             <p className={`text-xs font-medium mt-2 ${isDark ? 'text-gray-400' : 'text-amber-800'}`}>
-                {movie.release_date ? new Date(movie.release_date).getFullYear() : '2024'} 
+                {movie.release_date || '2024'} 
                 {" • "}
+                {/* ИСПРАВЛЕНО: У Кинопоиска жанр лежит в поле .genre */}
                 {movie.genres && Array.isArray(movie.genres) 
-                    ? movie.genres.slice(0, 2).map(g => g.name).join(" | ") 
+                    ? movie.genres.slice(0, 2).map(g => g.genre || g.name).join(" | ") 
                     : "Movie"}
             </p>
 
@@ -71,11 +70,12 @@ const MovieCard = ({ movie }) => {
                 <div
                     className='px-5 py-2 text-xs bg-red-400 text-white rounded-full font-bold hover:bg-red-500 transition-colors'
                 >
-                    Buy Tickets
+                   Купить билет
                 </div>
                 <p className='flex items-center gap-1 text-sm font-bold'>
                     <StarIcon className='w-4 h-4 text-red-400 fill-red-400' />
-                    {movie.vote_average ? movie.vote_average.toFixed(1) : '0.0'}
+                    {/* ИСПРАВЛЕНО: Обработка рейтинга */}
+                    {movie.vote_average ? Number(movie.vote_average).toFixed(1) : '0.0'}
                 </p>
             </div>
         </div>

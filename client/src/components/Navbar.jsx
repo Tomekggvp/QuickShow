@@ -53,11 +53,11 @@ const Navbar = () => {
 
                 <XIcon className={`md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer ${textColor}`} onClick={() => setIsOpen(!isOpen)} />
 
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Home</Link>
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Movies</Link>
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>Favorites</Link>
+                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Главная</Link>
+                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Фильмы</Link>
+                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>Избранное</Link>
 
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>My bookings</Link>
+                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>Бронирования</Link>
 
             </div>
 
