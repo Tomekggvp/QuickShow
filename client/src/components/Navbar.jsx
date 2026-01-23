@@ -1,19 +1,17 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { assets } from '../assets/assets'
-import { SearchIcon, MenuIcon, XIcon, TicketPlus } from 'lucide-react'
+import { MenuIcon, XIcon, TicketPlus } from 'lucide-react'
 import { useClerk, UserButton, useUser } from '@clerk/clerk-react'
 import { IconButton } from '@mui/material'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { useTheme } from '@mui/material/styles'
 import { useColorMode } from '../ThemeContext'
+import SearchBar from './SearchBar' 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const [showSearch, setShowSearch] = useState(false) 
-    const [searchQuery, setSearchQuery] = useState('') 
-    
     const { user } = useUser()
     const { openSignIn } = useClerk()
     const navigate = useNavigate()
@@ -24,23 +22,11 @@ const Navbar = () => {
     const isDark = theme.palette.mode === 'dark';
     const textColor = isDark ? 'text-white' : 'text-black';
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        if (searchQuery.trim()) {
-            navigate(`/movies?search=${searchQuery.trim()}`);
-            setSearchQuery('');
-            setShowSearch(false);
-        }
-    }
-
     return (
         <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
 
-           
-            <Link 
-                to='/' 
-                className={`max-md:flex-1 transition-opacity duration-300 ${showSearch ? 'max-sm:opacity-0 max-sm:pointer-events-none' : 'opacity-100'}`}
-            >
+            {/* Логотип */}
+            <Link to='/' className='max-md:flex-1'>
                 <img 
                     src={assets.logo} 
                     alt="Logo" 
@@ -69,40 +55,8 @@ const Navbar = () => {
 
             <div className='flex items-center gap-4 md:gap-8'>
                 
-                {/* Search Bar Logic */}
-                <div className='flex items-center justify-end relative'>
-          
-                    <div className="absolute right-0 flex items-center">
-                        <form 
-                            onSubmit={handleSearch}
-                            className={`
-                                flex items-center transition-all duration-500 ease-in-out overflow-hidden
-                                border-red-400 bg-transparent
-                                ${showSearch 
-                                    ? 'w-48 sm:w-56 md:w-64 px-3 py-1.5 border-b opacity-100 mr-10' 
-                                    : 'w-0 opacity-0 border-b-0 mr-0'}
-                            `}
-                        >
-                            <input 
-                                type="text"
-                                placeholder="Поиск..."
-                                autoFocus={showSearch}
-                                className={`bg-transparent outline-none text-sm w-full ${textColor}`}
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                            />
-                        </form>
-                    </div>
-
-                  
-                    <div className='z-10 cursor-pointer' onClick={() => setShowSearch(!showSearch)}>
-                        {showSearch ? (
-                            <XIcon className={`w-6 h-6 text-red-400 transition-all`} />
-                        ) : (
-                            <SearchIcon className={`w-6 h-6 transition-colors ${textColor}`} />
-                        )}
-                    </div>
-                </div>
+                {/* Компонент Поиска */}
+                <SearchBar textColor={textColor} />
 
                 <IconButton onClick={toggleColorMode} sx={{ color: 'inherit' }} className="max-md:hidden">
                     {isDark ? <Brightness7Icon className="text-yellow-400" /> : <Brightness4Icon className="text-slate-600" />}
@@ -110,7 +64,7 @@ const Navbar = () => {
                 
                 {
                     !user ? (
-                        <button onClick={openSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition rounded-full font-medium cursor-pointer text-white'>Login</button>
+                        <button onClick={openSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition rounded-full font-medium cursor-pointer text-white shadow-md active:scale-95'>Login</button>
                     ) : (
                         <UserButton>
                             <UserButton.MenuItems>
