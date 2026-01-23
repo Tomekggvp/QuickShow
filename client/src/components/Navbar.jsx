@@ -12,6 +12,8 @@ import SearchBar from './SearchBar'
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const [isSearchOpen, setIsSearchOpen] = useState(false)
+    
     const { user } = useUser()
     const { openSignIn } = useClerk()
     const navigate = useNavigate()
@@ -26,15 +28,19 @@ const Navbar = () => {
         <nav className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5 bg-transparent'>
 
            
-            <Link to='/' className='flex-shrink-0 mr-4'>
+            <Link 
+                to='/' 
+                className={`flex-shrink-0 transition-all duration-300 
+                ${isSearchOpen ? 'max-md:w-0 max-md:opacity-0 overflow-hidden' : 'w-auto opacity-100 mr-4'}`}
+            >
                 <img 
                     src={assets.logo} 
                     alt="Logo" 
-                    className={`w-32 md:w-36 h-auto transition-all duration-300 ${!isDark ? 'brightness-0' : ''}`} 
+                    className={`w-32 md:w-36 h-auto ${!isDark ? 'brightness-0' : ''}`} 
                 />
             </Link>
 
-            {/* Центральные ссылки (Desktop) */}
+            {/* Навигационные ссылки (Desktop) */}
             <div className={`
                 max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 
                 flex flex-col md:flex-row items-center max-md:justify-center gap-8 px-8 py-3 
@@ -53,37 +59,50 @@ const Navbar = () => {
                 <Link className={`${textColor} hover:text-red-400 transition-colors`} onClick={() => { window.scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>Бронирования</Link>
             </div>
 
-            {/* Правая часть: Поиск, Переключатель темы, Профиль */}
-            <div className='flex items-center gap-1 md:gap-4'>
+            {/* Правая часть: Поиск, Тема, Профиль */}
+            <div className={`flex items-center justify-end flex-1 md:flex-none transition-all ${isSearchOpen ? 'gap-0' : 'gap-1 md:gap-4'}`}>
                 
-                {/* Компонент Поиска */}
-                <SearchBar isDark={isDark} />
+                <SearchBar 
+                    isDark={isDark} 
+                    showSearch={isSearchOpen} 
+                    setShowSearch={setIsSearchOpen} 
+                />
 
-                {/* Переключатель темы (скрыт на мобилках в навбаре, если нужно) */}
-                <IconButton onClick={toggleColorMode} sx={{ color: 'inherit' }} className="hidden sm:inline-flex">
-                    {isDark ? <Brightness7Icon className="text-yellow-400" /> : <Brightness4Icon className="text-slate-600" />}
-                </IconButton>
+           
+                {!isSearchOpen && (
+                    <div className='flex items-center gap-1 md:gap-4'>
+                        <IconButton 
+                            onClick={toggleColorMode} 
+                            sx={{ color: 'inherit' }} 
+                            className="hidden sm:inline-flex"
+                        >
+                            {isDark ? <Brightness7Icon className="text-yellow-400" /> : <Brightness4Icon className="text-slate-600" />}
+                        </IconButton>
+                        
+                        <div className='flex items-center gap-2'>
+                            {!user ? (
+                                <button 
+                                    onClick={openSignIn} 
+                                    className="px-4 py-1.5 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition-all rounded-full font-medium text-white shadow-md active:scale-95 text-sm"
+                                >
+                                    Login
+                                </button>
+                            ) : (
+                                <div className='flex items-center flex-shrink-0'>
+                                    <UserButton afterSignOutUrl="/">
+                                        <UserButton.MenuItems>
+                                            <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
+                                        </UserButton.MenuItems>
+                                    </UserButton>
+                                </div>
+                            )}
+                            
+                            <MenuIcon className={`md:hidden w-8 h-8 cursor-pointer flex-shrink-0 ${textColor}`} onClick={() => setIsOpen(true)} />
+                        </div>
+                    </div>
+                )}
                 
-                <div className='flex items-center gap-3'>
-                    {
-                        !user ? (
-                            <button onClick={openSignIn} className='px-4 py-1.5 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition rounded-full font-medium cursor-pointer text-white shadow-md active:scale-95 text-sm'>
-                                Login
-                            </button>
-                        ) : (
-                            <div className='flex items-center'>
-                                <UserButton afterSignOutUrl="/">
-                                    <UserButton.MenuItems>
-                                        <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
-                                    </UserButton.MenuItems>
-                                </UserButton>
-                            </div>
-                        )
-                    }
-                    
-                   
-                    <MenuIcon className={`md:hidden w-8 h-8 cursor-pointer ${textColor}`} onClick={() => setIsOpen(true)} />
-                </div>
+                
             </div>
         </nav>
     )
