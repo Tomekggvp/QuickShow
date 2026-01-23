@@ -23,60 +23,69 @@ const Navbar = () => {
     const textColor = isDark ? 'text-white' : 'text-black';
 
     return (
-        <div className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5'>
+        <nav className='fixed top-0 left-0 z-50 w-full flex items-center justify-between px-6 md:px-16 lg:px-36 py-5 bg-transparent'>
 
-            {/* Логотип */}
-            <Link to='/' className='max-md:flex-1'>
+           
+            <Link to='/' className='flex-shrink-0 mr-4'>
                 <img 
                     src={assets.logo} 
                     alt="Logo" 
-                    className={`w-36 h-auto transition-all duration-300 ${!isDark ? 'brightness-0' : ''}`} 
+                    className={`w-32 md:w-36 h-auto transition-all duration-300 ${!isDark ? 'brightness-0' : ''}`} 
                 />
             </Link>
 
-            {/* Menu Links */}
+            {/* Центральные ссылки (Desktop) */}
             <div className={`
                 max-md:absolute max-md:top-0 max-md:left-0 max-md:font-medium max-md:text-lg z-50 
-                flex flex-col md:flex-row items-center max-md:justify-center gap-8 min-md:px-8 py-3 
-                max-md:h-screen min-md:rounded-full overflow-hidden transition-all duration-300
-                backdrop-blur-md border
+                flex flex-col md:flex-row items-center max-md:justify-center gap-8 px-8 py-3 
+                max-md:h-screen transition-all duration-300
+                backdrop-blur-md border md:rounded-full
                 ${isDark 
                     ? 'bg-black/70 md:bg-white/10 border-gray-300/20' 
                     : 'bg-white/60 md:bg-gray-200/40 border-gray-400/30 shadow-sm'}
-                ${isOpen ? 'max-md:w-full' : 'max-md:w-0'}
+                ${isOpen ? 'max-md:w-full opacity-100' : 'max-md:w-0 opacity-0 max-md:pointer-events-none md:opacity-100'}
             `}>
-                <XIcon className={`md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer ${textColor}`} onClick={() => setIsOpen(!isOpen)} />
+                <XIcon className={`md:hidden absolute top-6 right-6 w-6 h-6 cursor-pointer ${textColor}`} onClick={() => setIsOpen(false)} />
 
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/'>Главная</Link>
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Фильмы</Link>
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>Избранное</Link>
-                <Link className={textColor} onClick={() => { scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>Бронирования</Link>
+                <Link className={`${textColor} hover:text-red-400 transition-colors`} onClick={() => { window.scrollTo(0, 0); setIsOpen(false) }} to='/'>Главная</Link>
+                <Link className={`${textColor} hover:text-red-400 transition-colors`} onClick={() => { window.scrollTo(0, 0); setIsOpen(false) }} to='/movies'>Фильмы</Link>
+                <Link className={`${textColor} hover:text-red-400 transition-colors`} onClick={() => { window.scrollTo(0, 0); setIsOpen(false) }} to='/favorite'>Избранное</Link>
+                <Link className={`${textColor} hover:text-red-400 transition-colors`} onClick={() => { window.scrollTo(0, 0); setIsOpen(false) }} to='/my-bookings'>Бронирования</Link>
             </div>
 
-            <div className='flex items-center gap-4 md:gap-8'>
+            {/* Правая часть: Поиск, Переключатель темы, Профиль */}
+            <div className='flex items-center gap-1 md:gap-4'>
                 
                 {/* Компонент Поиска */}
-                <SearchBar textColor={textColor} />
+                <SearchBar isDark={isDark} />
 
-                <IconButton onClick={toggleColorMode} sx={{ color: 'inherit' }} className="max-md:hidden">
+                {/* Переключатель темы (скрыт на мобилках в навбаре, если нужно) */}
+                <IconButton onClick={toggleColorMode} sx={{ color: 'inherit' }} className="hidden sm:inline-flex">
                     {isDark ? <Brightness7Icon className="text-yellow-400" /> : <Brightness4Icon className="text-slate-600" />}
                 </IconButton>
                 
-                {
-                    !user ? (
-                        <button onClick={openSignIn} className='px-4 py-1 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition rounded-full font-medium cursor-pointer text-white shadow-md active:scale-95'>Login</button>
-                    ) : (
-                        <UserButton>
-                            <UserButton.MenuItems>
-                                <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
-                            </UserButton.MenuItems>
-                        </UserButton>
-                    )
-                }
-                
-                <MenuIcon className={`md:hidden w-8 h-8 cursor-pointer ${textColor}`} onClick={() => setIsOpen(!isOpen)} />
+                <div className='flex items-center gap-3'>
+                    {
+                        !user ? (
+                            <button onClick={openSignIn} className='px-4 py-1.5 sm:px-7 sm:py-2 bg-red-400 hover:bg-red-500 transition rounded-full font-medium cursor-pointer text-white shadow-md active:scale-95 text-sm'>
+                                Login
+                            </button>
+                        ) : (
+                            <div className='flex items-center'>
+                                <UserButton afterSignOutUrl="/">
+                                    <UserButton.MenuItems>
+                                        <UserButton.Action label='My Bookings' labelIcon={<TicketPlus width={15} />} onClick={() => navigate('/my-bookings')} />
+                                    </UserButton.MenuItems>
+                                </UserButton>
+                            </div>
+                        )
+                    }
+                    
+                   
+                    <MenuIcon className={`md:hidden w-8 h-8 cursor-pointer ${textColor}`} onClick={() => setIsOpen(true)} />
+                </div>
             </div>
-        </div>
+        </nav>
     )
 }
 

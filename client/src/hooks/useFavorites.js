@@ -22,7 +22,7 @@ export const useFavorites = () => {
 
   const toggleFavorite = async (movieId, movieTitle = "Movie") => {
     if (!isSignedIn) {
-      toast.error('Please log in to add favorites', {
+      toast.error('Пожалуйста, войдите, чтобы добавить фильм в избранное.', {
         style: {
           borderRadius: '10px',
           background: isDark ? '#333' : '#fff',
@@ -51,7 +51,7 @@ export const useFavorites = () => {
         },
       });
 
-      toast.success(alreadyLiked ? `Removed ${movieTitle}` : `${movieTitle} added!`, {
+      toast.success(alreadyLiked ? `"${movieTitle}" удалён из избранного ` : `"${movieTitle}" добавлен в избранное!`, {
         duration: 2000,
         position: 'bottom-right'
       });
