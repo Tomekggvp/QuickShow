@@ -22,7 +22,7 @@ const App = () => {
   return (
     <>
     <Toaster/>
-     {!isAdminRoute && <Navbar/>}
+       {!isAdminRoute && <Navbar/>}
      <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/movies' element={<Movies/>}/>
